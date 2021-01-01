@@ -49,7 +49,6 @@ import org.bukkit.NamespacedKey;
 
 import me.elementemerald.EmeraldsUtilities.utils.CommandCheck;
 
-@SpigotPlugin
 public class Main extends JavaPlugin implements Listener, TabCompleter {
 	// file configs
 	private File configf;
@@ -972,11 +971,12 @@ public class Main extends JavaPlugin implements Listener, TabCompleter {
 					OfflinePlayer op = getOfflinePlayer2(args[0]);
 					if (op != null)
 					{
+						java.util.UUID uid = op.getUniqueId();
 						boolean banned = op.isBanned();
 						boolean online = op.isOnline();
 						String lastplayed = userLastPlayed(op);
 						s.sendMessage("----- Player Whois -----");
-						String[] msgs = {String.format("User banned?: %s", banned ? "Yes" : "No"), String.format("User online?: %s", online ? "Yes" : "No"), String.format("User last played: %s", lastplayed)};
+						String[] msgs = {String.format("User ID: %s", uid.toString()), String.format("User banned?: %s", banned ? "Yes" : "No"), String.format("User online?: %s", online ? "Yes" : "No"), String.format("User last played: %s", lastplayed)};
 						s.sendMessage(msgs);
 					}
 					else {
