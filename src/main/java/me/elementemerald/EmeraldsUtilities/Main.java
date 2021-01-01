@@ -1139,6 +1139,36 @@ public class Main extends JavaPlugin implements Listener, TabCompleter {
 							}
 							p.sendMessage(prefix + " Removed " + Integer.toString(count) + " entities.");
 						}
+						else if (args[0].equalsIgnoreCase("living"))
+						{
+							World w = null;
+
+							if (args.length >= 2)
+							{
+								w = Bukkit.getWorld(args[1]);
+								if (w == null)
+								{
+									p.sendMessage(prefix + " Not a valid world.");
+									return true;
+								}
+							}
+							else
+							{
+								w = p.getWorld();
+							}
+
+							int count = 0;
+							List<LivingEntity> ents = w.getLivingEntities();
+							for (LivingEntity ent : ents)
+							{
+								if (ent.getType() != EntityType.PLAYER)
+								{
+									ent.remove();
+									count++;
+								}
+							}
+							p.sendMessage(prefix + " Removed " + Integer.toString(count) + " entities.");
+						}
 						else
 						{
 							World w = null;
@@ -1315,6 +1345,7 @@ public class Main extends JavaPlugin implements Listener, TabCompleter {
 				List<String> ents = new ArrayList<>();
 				ents.add("all");
 				ents.add("hostile");
+				ents.add("living");
 				for (EntityType ent : EntityType.values())
 				{
 					String n = ent.name().toLowerCase();
