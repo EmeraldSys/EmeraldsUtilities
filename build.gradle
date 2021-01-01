@@ -1,6 +1,7 @@
 plugins {
     id 'java'
     id 'com.github.johnrengelman.shadow' version '6.1.0'
+    id 'kr.entree.spigradle' version '2.2.3'
 }
 
 
@@ -11,15 +12,11 @@ sourceCompatibility = '8'
 repositories {
     mavenLocal()
     mavenCentral()
-
-    maven {
-        url = 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/'
-    }
+    spigotmc()
 }
 
 dependencies {
-    compileOnly 'org.spigotmc:spigot-api:1.16.4-R0.1-SNAPSHOT'
-    compileOnly 'org.bukkit:bukkit:1.16.4-R0.1-SNAPSHOT'
+    compileOnly spigot("1.16.3")
 }
 
 compileJava.options.encoding = 'UTF-8'
