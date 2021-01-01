@@ -49,7 +49,6 @@ import org.bukkit.NamespacedKey;
 
 import me.elementemerald.EmeraldsUtilities.utils.CommandCheck;
 
-@SpigotPlugin
 public class Main extends JavaPlugin implements Listener, TabCompleter {
 	// file configs
 	private File configf;
