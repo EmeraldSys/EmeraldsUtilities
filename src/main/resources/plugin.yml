@@ -1,6 +1,6 @@
 main: me.elementemerald.EmeraldsUtilities.Main
 name: EmeraldsUtilities
-version: 0.0.2
+version: 0.0.2a
 description: My own set of utilities I made. I made this while learning regular Java lol.
 api-version: 1.16
 author: ElementEmerald
