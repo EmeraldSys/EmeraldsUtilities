@@ -721,31 +721,31 @@ public class Main extends JavaPlugin implements Listener, TabCompleter {
 			{	
 				Player p = (Player)s;
 				if (p.hasPermission("EUtilities.item")) {
-                    if (args.length == 0) {
-                        ItemStack i = p.getInventory().getItemInMainHand();
-                        if (i.getType() == Material.AIR)
-                        {
-                            return true;
-                        }
+					    if (args.length == 0) {
+						ItemStack i = p.getInventory().getItemInMainHand();
+						if (i.getType() == Material.AIR)
+						{
+						    return true;
+						}
 
-                        ItemMeta im = i.getItemMeta();
-                        im.setDisplayName(null);
-                        i.setItemMeta(im);
-                    } else {
-                        try {
-                            ItemStack i = p.getInventory().getItemInMainHand();
-                            if (i.getType() == Material.AIR) {
-                                return true;
-                            }
+						ItemMeta im = i.getItemMeta();
+						im.setDisplayName(null);
+						i.setItemMeta(im);
+					    } else {
+						try {
+						    ItemStack i = p.getInventory().getItemInMainHand();
+						    if (i.getType() == Material.AIR) {
+							return true;
+						    }
 
-                            ItemMeta im = i.getItemMeta();
-                            im.setDisplayName(String.join(" ", args));
-                            i.setItemMeta(im);
-                        } catch (IndexOutOfBoundsException ex) {
-                            s.sendMessage(prefix + " Invalid syntax. Usage: /eurename <name>");
-                        }
-                    }
-                }
+						    ItemMeta im = i.getItemMeta();
+						    im.setDisplayName(String.join(" ", args));
+						    i.setItemMeta(im);
+						} catch (IndexOutOfBoundsException ex) {
+						    s.sendMessage(prefix + " Invalid syntax. Usage: /eurename <name>");
+						}
+					    }
+					}
 				else
 				{
 					s.sendMessage(prefix + " You do not have access to this command.");
