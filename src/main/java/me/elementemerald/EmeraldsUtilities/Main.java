@@ -80,6 +80,7 @@ public class Main extends JavaPlugin implements Listener, TabCompleter {
 			ConfigurationSection autorule = config.createSection("autorule");
 			ConfigurationSection powert = config.createSection("powertools");
 			ConfigurationSection warps = config.createSection("warps");
+			ConfigurationSection homes = config.createSection("homes");
 			//config.set("randomspawn", false);
 			//spawning.set("randomspawn", false);
 			cleanup.set("enabled", false);
@@ -787,20 +788,29 @@ public class Main extends JavaPlugin implements Listener, TabCompleter {
 						}
 						else
 						{
-							Enchantment ench = getEnchantByString(args[0].toLowerCase());
-							if (ench == null)
-							{
-								p.sendMessage(prefix + " Invalid enchantment.");
-								return true;
-							}
-							
-							i.addUnsafeEnchantment(ench, Integer.parseInt(args[1]));
-							p.sendMessage(prefix + " Added " + ChatColor.AQUA + args[0].toUpperCase() + ChatColor.WHITE + " to " + ChatColor.AQUA + i.getType().name() + ChatColor.WHITE + ".");
+						    if (args[0].equals("all"))
+                            {
+                                for (Enchantment ench : Enchantment.values())
+                                {
+                                    i.addUnsafeEnchantment(ench, 32767);
+                                }
+                                p.sendMessage(prefix + " Added all enchantments.");
+                            }
+						    else {
+                                Enchantment ench = getEnchantByString(args[0].toLowerCase());
+                                if (ench == null) {
+                                    p.sendMessage(prefix + " Invalid enchantment.");
+                                    return true;
+                                }
+
+                                i.addUnsafeEnchantment(ench, Integer.parseInt(args[1]));
+                                p.sendMessage(prefix + " Added " + ChatColor.AQUA + args[0].toUpperCase() + ChatColor.WHITE + " to " + ChatColor.AQUA + i.getType().name() + ChatColor.WHITE + ".");
+                            }
 						}
 					}
 					catch (IndexOutOfBoundsException ex)
 					{
-						s.sendMessage(prefix + " Invalid syntax. Usage: /eucenchant <enchantment> <level>");
+						s.sendMessage(prefix + " Invalid syntax. Usage: /eucenchant <enchantment> [level]");
 					}
 				}
 				else
@@ -1218,7 +1228,130 @@ public class Main extends JavaPlugin implements Listener, TabCompleter {
 				}
 			}
 		}
+		if (label.equalsIgnoreCase("euignite"))
+        {
+            if (s instanceof Player)
+			{
+                Player p = (Player)s;
+                if (p.hasPermission("EUtilities.entity")) {
+					Block target = p.getTargetBlock(null, 50);
+					Location loc = target.getLocation();
+					Location loc2 = new Location(p.getWorld(), loc.getX(), loc.getY() + 1, loc.getZ());
+					Block b = loc2.getBlock();
+					b.setType(Material.FIRE);
+				}
+                else
+				{
+					s.sendMessage(prefix + " You do not have access to this command.");
+				}
+            }
+        }
+		if (label.equalsIgnoreCase("euworld"))
+        {
+            if (s instanceof Player)
+			{
+				Player p = (Player)s;
+				World w = Bukkit.getWorld(args[0]);
+				if (w == null)
+				{
+					p.sendMessage(prefix + " World not found.");
+					return true;
+				}
+				Location loc = w.getSpawnLocation();
+            	if (args.length > 1)
+            	{
+					Player p2 = Bukkit.getPlayer(args[1]);
+					if (p2 == null)
+					{
+						p.sendMessage(prefix + " Player not found.");
+						return true;
+					}
+
+					p2.teleport(loc);
+				}
+            	else
+				{
+					p.teleport(loc);
+				}
+            }
+        }
+		if (label.equalsIgnoreCase("euhome"))
+		{
+			if (s instanceof Player)
+			{
+				Player p = (Player)s;
+				ConfigurationSection homes = config.getConfigurationSection("homes");
+				ConfigurationSection home = homes.getConfigurationSection(p.getName());
+				if (home != null)
+				{
+					String strloc = home.getString("loc");
+					String[] splitloc = strloc.split(" ");
+					World w = Bukkit.getWorld(home.getString("world"));
+					if (w != null)
+					{
+						p.teleport(new Location(w, Double.parseDouble(splitloc[0]), Double.parseDouble(splitloc[1]), Double.parseDouble(splitloc[2])));
+					}
+				}
+			}
+		}
+		if (label.equalsIgnoreCase("eusethome"))
+		{
+			if (s instanceof Player)
+			{
+				Player p = (Player)s;
+				try
+				{
+					String homename = args[0];
+					ConfigurationSection homes = config.getConfigurationSection("homes");
+					if (homes.getConfigurationSection(p.getName()) == null) {
+						ConfigurationSection phome = homes.createSection(p.getName());
+
+						if (args.length >= 4)
+						{
+                            String strloc = String.format("%s %s %s", args[1], args[2], args[3]);
+                            phome.set("name", homename);
+                            phome.set("loc", strloc);
+                            phome.set("world", p.getWorld().getName());
+						}
+						else {
+                            Location loc = p.getLocation();
+                            String strloc = String.format("%s %s %s", Double.toString(loc.getX()), Double.toString(loc.getY()), Double.toString(loc.getZ()));
+                            phome.set("name", homename);
+                            phome.set("loc", strloc);
+                            phome.set("world", p.getWorld().getName());
+                        }
+						saveConfig();
+						p.sendMessage(prefix + " Home set.");
+					}
+				}
+				catch (IndexOutOfBoundsException ex)
+				{
+					p.sendMessage(prefix + " Invalid syntax. Usage: /eusethome <name> [x] [y] [z]");
+				}
+			}
+		}
+		if (label.equalsIgnoreCase("eudelhome"))
+		{
+			if (s instanceof Player)
+			{
+				Player p = (Player)s;
+				ConfigurationSection homes = config.getConfigurationSection("homes");
+				ConfigurationSection home = homes.getConfigurationSection(p.getName());
+				if (home != null)
+				{
+					homes.set(p.getName(), null);
+					saveConfig();
+					p.sendMessage(prefix + " Home deleted.");
+				}
+			}
+		}
 		return true;
+	}
+
+	public List<String> emptyList()
+	{
+		List<String> empty = new ArrayList<>();
+		return empty;
 	}
 	
 	public List<String> onTabComplete(CommandSender s, Command cmd, String alias, String[] args) 
@@ -1249,11 +1382,8 @@ public class Main extends JavaPlugin implements Listener, TabCompleter {
 		}
 		else if (cmd.getName().equalsIgnoreCase("eucreatewarp"))
 		{
-			if (args.length == 1)
-			{
-				List<String> empty = new ArrayList<>();
-				return empty;
-			}
+			List<String> empty = new ArrayList<>();
+			return empty;
 		}
 		else if (cmd.getName().equalsIgnoreCase("euwarp") || cmd.getName().equalsIgnoreCase("eudelwarp"))
 		{
@@ -1275,6 +1405,7 @@ public class Main extends JavaPlugin implements Listener, TabCompleter {
 			if (args.length == 1)
 			{
 				List<String> enchs = new ArrayList<>();
+				enchs.add("all");
 				for (Enchantment ench : Enchantment.values())
 				{
 					String ench2 = ench.getKey().getKey();
@@ -1354,6 +1485,52 @@ public class Main extends JavaPlugin implements Listener, TabCompleter {
 				return ents;
 			}
 		}
+		else if (cmd.getName().equalsIgnoreCase("euignite"))
+        {
+			return emptyList();
+        }
+		else if (cmd.getName().equalsIgnoreCase("euworld"))
+        {
+            if (args.length == 1)
+            {
+                List<String> worlds = new ArrayList<>();
+                for (World w : Bukkit.getWorlds())
+                {
+                    worlds.add(w.getName());
+                }
+                return worlds;
+            }
+        }
+		else if (cmd.getName().equalsIgnoreCase("euhome") || cmd.getName().equalsIgnoreCase("eudelhome"))
+		{
+			return emptyList();
+		}
+		else if (cmd.getName().equalsIgnoreCase("eusethome"))
+        {
+            if (args.length > 1)
+            {
+                if (args.length == 2)
+                {
+                    List<String> list = new ArrayList<>();
+                    list.add("x");
+                    return list;
+                }
+                else if (args.length == 3)
+                {
+                    List<String> list = new ArrayList<>();
+                    list.add("y");
+                    return list;
+                }
+                else if (args.length == 4)
+                {
+                    List<String> list = new ArrayList<>();
+                    list.add("z");
+                    return list;
+                }
+                return emptyList();
+            }
+            return emptyList();
+        }
 		return null;
 	}
 }
