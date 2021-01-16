@@ -57,6 +57,8 @@ public class Main extends JavaPlugin implements Listener, TabCompleter {
 	private static ArrayList<Player> queue = new ArrayList<Player>();
 	private static List<String> motds = Arrays.asList("Project Acidity MC Server\n" + ChatColor.GOLD + "You feelin it now, Mr Krabs?", "Project Acidity MC Server\n" + ChatColor.AQUA + "Sometimes, things come out of the blue.", "Project Acidity MC Server\n" + ChatColor.DARK_GREEN + "idk anymore", "Project Acidity MC Server\n" + ChatColor.LIGHT_PURPLE + "Imagine this server actually having players.", "Project Acidity MC Server\n" + ChatColor.MAGIC + "II " + ChatColor.RESET + ChatColor.ITALIC + "party rocking" + ChatColor.RESET + ChatColor.MAGIC + " II");
 
+	boolean debug = true;
+
 	boolean entitycleanup = false;
 	int entitylimit = 0;
 	boolean randomspawn = false;
@@ -142,7 +144,7 @@ public class Main extends JavaPlugin implements Listener, TabCompleter {
 	public void onEnable()
 	{
 		System.out.println("[Emeralds Utilities] Enabled!");
-		System.out.println(String.format("[Emeralds Utilities] Plugin dir = %s", System.getProperty("user.dir")));
+		if (debug) System.out.println(String.format("[Emeralds Utilities] Plugin dir = %s", System.getProperty("user.dir")));
 		FileConfiguration sconfig = createConfig();
 		ConfigurationSection cleanup = sconfig.getConfigurationSection("cleanup");
 		entitycleanup = cleanup.getBoolean("enabled");
@@ -365,7 +367,7 @@ public class Main extends JavaPlugin implements Listener, TabCompleter {
 	{
 		if (label.equalsIgnoreCase("eutilities"))
 		{
-			String[] msgs = {ChatColor.DARK_GREEN + "Running v" + this.getDescription().getVersion() + "."};
+			String[] msgs = {ChatColor.DARK_GREEN + "Running v" + this.getDescription().getVersion() + ".", "Debug mode = " + (debug ? ChatColor.GREEN + "On" : ChatColor.RED + "Off")};
 			s.sendMessage(msgs);
 		}
 		if (label.equalsIgnoreCase("eureload"))
