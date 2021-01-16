@@ -65,6 +65,8 @@ commands:
       description: Sets your home.
    eudelhome:
       description: Deletes your home.
+   eugenworld:
+      description: Generate a new world.
 permissions:
    EUtilities.config:
       description: Allows config control.
@@ -83,4 +85,7 @@ permissions:
       default: op
    EUtilities.view:
       description: Allows spying of players.
+      default: op
+   EUtilities.worlds:
+      description: Allows control of worlds.
       default: op

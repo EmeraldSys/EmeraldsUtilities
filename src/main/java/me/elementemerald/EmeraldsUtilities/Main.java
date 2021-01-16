@@ -1,5 +1,6 @@
 package me.elementemerald.EmeraldsUtilities;
 
+import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -9,7 +10,9 @@ import java.util.Map;
 import java.util.Map.Entry;
 //import java.util.Set;
 import java.util.Random;
+import java.util.Timer;
 
+import org.bukkit.*;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -19,6 +22,7 @@ import java.io.File;
 import java.io.IOException;
 
 //import org.bukkit.GameRule;
+import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -29,7 +33,9 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntitySpawnEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
+import org.bukkit.event.server.ServerListPingEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -37,15 +43,8 @@ import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.entity.*;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.World;
 import org.bukkit.block.Block;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.command.*;
-import org.bukkit.NamespacedKey;
 
 import me.elementemerald.EmeraldsUtilities.utils.CommandCheck;
 
@@ -54,7 +53,9 @@ public class Main extends JavaPlugin implements Listener, TabCompleter {
 	private File configf;
 	private FileConfiguration config;
 	private ArrayList<String> godmode = new ArrayList<String>();
-	
+	private static ArrayList<Player> queue = new ArrayList<Player>();
+	private static List<String> motds = Arrays.asList("Project Acidity MC Server\n" + ChatColor.GOLD + "You feelin it now, Mr Krabs?", "Project Acidity MC Server\n" + ChatColor.AQUA + "Sometimes, things come out of the blue.", "Project Acidity MC Server\n" + ChatColor.DARK_GREEN + "idk anymore", "Project Acidity MC Server\n" + ChatColor.LIGHT_PURPLE + "Imagine this server actually having players.", "Project Acidity MC Server\n" + ChatColor.MAGIC + "II " + ChatColor.RESET + ChatColor.ITALIC + "party rocking" + ChatColor.RESET + ChatColor.MAGIC + " II");
+
 	boolean entitycleanup = false;
 	int entitylimit = 0;
 	boolean randomspawn = false;
@@ -118,6 +119,23 @@ public class Main extends JavaPlugin implements Listener, TabCompleter {
 			e.printStackTrace();
 		}
 	}
+
+	private static class TeleporterRunnable implements Runnable {
+		private TeleporterRunnable() {}
+		@Override
+		public void run() {
+			World w = Bukkit.getWorld("world");
+			if (queue.size() > 0 && w.getPlayers().size() < 12)
+			{
+				//Random r = new Random();
+				//int randomidx = r.nextInt(queue.size());
+				//System.out.println(String.format("[EmeraldsUtilities] Random index is %s", Integer.toString(randomidx)));
+				Player rplayer = queue.get(0);
+				rplayer.teleport(w.getSpawnLocation());
+				queue.remove(rplayer);
+			}
+		}
+	}
 	
 	@Override
 	public void onEnable()
@@ -128,21 +146,53 @@ public class Main extends JavaPlugin implements Listener, TabCompleter {
 		entitycleanup = cleanup.getBoolean("enabled");
 		entitylimit = cleanup.getInt("entitylimit");
 		logevents = config.getBoolean("logevents");
-		//randomspawn = sconfig.getBoolean("randomspawn");
 		Bukkit.getServer().getPluginManager().registerEvents(this, this);
+		//World queuew = new WorldCreator("queue_world").createWorld();
+        //Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new TeleporterRunnable(), 0L, 300L);
 	}
 	
 	public void onDisable()
 	{
 		System.out.println("[Emeralds Utilities] Disabled!");
 	}
+
+	@EventHandler
+    public void onPing(ServerListPingEvent e)
+    {
+        Random r = new Random();
+        int rint = r.nextInt(motds.size());
+        String newmotd = motds.get(rint);
+        e.setMotd(newmotd);
+    }
 	
 	@EventHandler
 	public void onJoin(PlayerJoinEvent e)
 	{
 		Player p = e.getPlayer();
 		p.sendMessage(ChatColor.AQUA + "This server is running Emerald's Custom Utility plugin.");
+
+		// user queue system below
+		/* World w = Bukkit.getWorld("world");
+		if (w.getPlayers().size() >= 12)
+		{
+		World wqueue = Bukkit.getWorld("queue_world");
+		Location loc = wqueue.getSpawnLocation();
+		p.teleport(loc);
+		p.sendMessage(ChatColor.YELLOW + "You're in the queue for joining the main world.");
+		queue.add(p);
+		} */
 	}
+
+	/* @EventHandler
+	public void onLeft(PlayerQuitEvent e)
+	{
+		Player p = e.getPlayer();
+		if (queue.contains(p))
+		{
+			System.out.println(String.format("[EmeraldsUtilities] %s (UUID = %s) was in the queue and left before teleport", p.getName(), p.getUniqueId().toString()));
+		}
+		queue.remove(p);
+	} */
 	
 	@EventHandler
 	public void onRespawn(PlayerRespawnEvent e)
@@ -157,8 +207,7 @@ public class Main extends JavaPlugin implements Listener, TabCompleter {
 			Player p = e.getPlayer();
 			// not sure if this is the default world, might read server.properties
 			//World defWorld = Bukkit.getServer().getWorlds().get(0);
-			Location randompos = new Location(null, x, y, z);
-			p.teleport(randompos);
+			p.teleport(new Location(null, x, y, z));
 		}
 	}
 	
@@ -1345,6 +1394,23 @@ public class Main extends JavaPlugin implements Listener, TabCompleter {
 				}
 			}
 		}
+		if (label.equalsIgnoreCase("eugenworld"))
+		{
+			if (s.hasPermission("EUtilities.worlds"))
+			{
+				try {
+					WorldCreator wc = new WorldCreator(args[0]);
+					wc.environment(World.Environment.NORMAL);
+					wc.type(WorldType.NORMAL);
+					wc.createWorld();
+					s.sendMessage(prefix + " World created.");
+				}
+				catch (IndexOutOfBoundsException ex)
+				{
+					s.sendMessage(prefix + " Invalid syntax. Usage: /eugenworld <name>");
+				}
+			}
+		}
 		return true;
 	}
 
@@ -1531,6 +1597,10 @@ public class Main extends JavaPlugin implements Listener, TabCompleter {
             }
             return emptyList();
         }
+		else if (cmd.getName().equalsIgnoreCase("eugenworld"))
+		{
+			return emptyList();
+		}
 		return null;
 	}
 }
