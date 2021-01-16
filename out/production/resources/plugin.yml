@@ -1,0 +1,91 @@
+main: me.elementemerald.EmeraldsUtilities.Main
+name: EmeraldsUtilities
+version: 0.0.2b
+description: My own set of utilities I made. I made this while learning regular Java lol.
+api-version: 1.16
+author: ElementEmerald
+website: mc.eemerald.xyz
+
+commands:
+   eureload:
+      description: Reloads config.
+   eucustomentity:
+      description: Spawns custom entity.
+   euflymode:
+      description: Sets fly mode.
+   eugetfspeed:
+      description: Returns player fly speed.
+   eusetfspeed:
+      description: Sets player fly speed.
+   eudebug:
+      description: Debugging.
+   euaddpt:
+      description: Adds powertool.
+   euremovept:
+      description: Removes powertool.
+   eugod:
+      description: God mode toggle.
+   eusmite:
+      description: Spawns lightning strike.
+   eucreatewarp:
+      description: Creates a warp.
+   euwarp:
+      description: Teleport to a warp.
+   eudelwarp:
+      description: Deletes a warp.
+   euget32k:
+      description: Gives an OP sword.
+   eurename:
+      description: Renames item in hand.
+   eucenchant:
+      description: Custom enchant.
+   eurenchant:
+      description: Removes enchantment.
+   eurenchants:
+      description: Removes all enchantments.
+   euechest:
+      description: Opens your ender chest remotely.
+   euinvsee:
+      description: View someones inventory.
+   euclearinv:
+      description: Clears inventory.
+   euwhois:
+      description: Gets player info.
+   eucpotion:
+      description: Custom potion.
+   eukillentity:
+      description: Kill all or any type of entities.
+   euignite:
+      description: Ignites block.
+   euworld:
+      description: Teleports you to a world.
+   euhome:
+      description: Teleports you to your home.
+   eusethome:
+      description: Sets your home.
+   eudelhome:
+      description: Deletes your home.
+   eugenworld:
+      description: Generate a new world.
+permissions:
+   EUtilities.config:
+      description: Allows config control.
+      default: op
+   EUtilities.entity:
+      description: Allows entity control.
+      default: op
+   EUtilities.fly:
+      description: Allows player flying control.
+      default: op
+   EUtilities.god:
+      description: Allows invulnerability control.
+      default: op
+   EUtilities.item:
+      description: Allows item control (powertool, etc.)
+      default: op
+   EUtilities.view:
+      description: Allows spying of players.
+      default: op
+   EUtilities.worlds:
+      description: Allows control of worlds.
+      default: op
