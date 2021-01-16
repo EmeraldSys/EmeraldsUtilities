@@ -141,6 +141,7 @@ public class Main extends JavaPlugin implements Listener, TabCompleter {
 	public void onEnable()
 	{
 		System.out.println("[Emeralds Utilities] Enabled!");
+		System.out.println(String.format("[Emeralds Utilities] Plugin dir = %s", System.getProperty("user.dir")));
 		FileConfiguration sconfig = createConfig();
 		ConfigurationSection cleanup = sconfig.getConfigurationSection("cleanup");
 		entitycleanup = cleanup.getBoolean("enabled");
