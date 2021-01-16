@@ -1412,6 +1412,20 @@ public class Main extends JavaPlugin implements Listener, TabCompleter {
 				}
 			}
 		}
+		if (label.equalsIgnoreCase("euunloadworld"))
+		{
+			if (s.hasPermission("EUtilities.worlds"))
+			{
+				if (Bukkit.unloadWorld(args[0], true))
+				{
+					s.sendMessage(prefix + " World unloaded.");
+				}
+				else
+				{
+					s.sendMessage(prefix + " An error occurred while unloading.");
+				}
+			}
+		}
 		return true;
 	}
 
@@ -1601,6 +1615,18 @@ public class Main extends JavaPlugin implements Listener, TabCompleter {
 		else if (cmd.getName().equalsIgnoreCase("eugenworld"))
 		{
 			return emptyList();
+		}
+		else if (cmd.getName().equalsIgnoreCase("euunloadworld"))
+		{
+			if (args.length == 1)
+			{
+				List<String> worlds = new ArrayList<>();
+				for (World w : Bukkit.getWorlds())
+				{
+					worlds.add(w.getName());
+				}
+				return worlds;
+			}
 		}
 		return null;
 	}

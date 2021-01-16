@@ -66,7 +66,9 @@ commands:
    eudelhome:
       description: Deletes your home.
    eugenworld:
-      description: Generate a new world.
+      description: Generates a new world.
+   euunloadworld:
+      description: Unloads a world.
 permissions:
    EUtilities.config:
       description: Allows config control.
