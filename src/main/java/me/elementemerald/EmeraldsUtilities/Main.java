@@ -24,6 +24,7 @@ import java.io.IOException;
 //import org.bukkit.GameRule;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.event.EventHandler;
@@ -362,6 +363,11 @@ public class Main extends JavaPlugin implements Listener, TabCompleter {
 	@Override
 	public boolean onCommand(CommandSender s, Command cmd, String label, String[] args)
 	{
+		if (label.equalsIgnoreCase("eutilities"))
+		{
+			String[] msgs = {ChatColor.DARK_GREEN + "Running v" + this.getDescription().getVersion() + "."};
+			s.sendMessage(msgs);
+		}
 		if (label.equalsIgnoreCase("eureload"))
 		{
 			if (s.hasPermission("EUtilities.config"))
