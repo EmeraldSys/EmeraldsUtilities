@@ -90,7 +90,7 @@ public class Main extends JavaPlugin implements Listener, TabCompleter {
 			cleanup.set("enabled", false);
 			cleanup.set("entitylimit", 500);
 			config.set("logevents", true);
-			List<String> defaultmotds = Arrays.asList("Default MOTD!");
+			List<String> defaultmotds = Arrays.asList("\"Default MOTD!\"");
 			config.set("motds", defaultmotds);
 			try
 			{
@@ -113,12 +113,7 @@ public class Main extends JavaPlugin implements Listener, TabCompleter {
 		logevents = config.getBoolean("logevents");
 		motds.clear();
 		List<String> configmotds = config.getStringList("motds");
-		List<String> configmotds_2 = new ArrayList<>();
-		for (String str : configmotds)
-		{
-			String newstr = str.replace("\n", System.getProperty("line.separator"));
-			motds.add(newstr);
-		}
+		motds.addAll(configmotds);
 		//randomspawn = spawning.getBoolean("randomspawn");
 	}
 	
@@ -160,12 +155,7 @@ public class Main extends JavaPlugin implements Listener, TabCompleter {
 		entitylimit = cleanup.getInt("entitylimit");
 		logevents = config.getBoolean("logevents");
 		List<String> configmotds = config.getStringList("motds");
-		List<String> configmotds_2 = new ArrayList<>();
-		for (String str : configmotds)
-		{
-			String newstr = str.replace("\n", System.getProperty("line.separator"));
-			motds.add(newstr);
-		}
+		motds.addAll(configmotds);
 		Bukkit.getServer().getPluginManager().registerEvents(this, this);
 		//World queuew = new WorldCreator("queue_world").createWorld();
         //Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new TeleporterRunnable(), 0L, 300L);
