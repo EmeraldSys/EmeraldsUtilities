@@ -55,7 +55,7 @@ public class Main extends JavaPlugin implements Listener, TabCompleter {
 	private FileConfiguration config;
 	private ArrayList<String> godmode = new ArrayList<String>();
 	private static ArrayList<Player> queue = new ArrayList<Player>();
-	private static List<String> motds = Arrays.asList("Project Acidity MC Server\n" + ChatColor.GOLD + "You feelin it now, Mr Krabs?", "Project Acidity MC Server\n" + ChatColor.AQUA + "Sometimes, things come out of the blue.", "Project Acidity MC Server\n" + ChatColor.DARK_GREEN + "idk anymore", "Project Acidity MC Server\n" + ChatColor.LIGHT_PURPLE + "Imagine this server actually having players.", "Project Acidity MC Server\n" + ChatColor.MAGIC + "II " + ChatColor.RESET + ChatColor.ITALIC + "party rocking" + ChatColor.RESET + ChatColor.MAGIC + " II");
+	private List<String> motds = new ArrayList<>();
 
 	boolean debug = true;
 
@@ -90,7 +90,8 @@ public class Main extends JavaPlugin implements Listener, TabCompleter {
 			cleanup.set("enabled", false);
 			cleanup.set("entitylimit", 500);
 			config.set("logevents", true);
-			
+			List<String> defaultmotds = Arrays.asList("Default MOTD!");
+			config.set("motds", defaultmotds);
 			try
 			{
 				config.save(configf);
@@ -110,6 +111,9 @@ public class Main extends JavaPlugin implements Listener, TabCompleter {
 		entitycleanup = cleanup.getBoolean("enabled");
 		entitylimit = cleanup.getInt("entitylimit");
 		logevents = config.getBoolean("logevents");
+		motds.clear();
+		List<String> configmotds = config.getStringList("motds");
+		motds.addAll(configmotds);
 		//randomspawn = spawning.getBoolean("randomspawn");
 	}
 	
@@ -150,6 +154,8 @@ public class Main extends JavaPlugin implements Listener, TabCompleter {
 		entitycleanup = cleanup.getBoolean("enabled");
 		entitylimit = cleanup.getInt("entitylimit");
 		logevents = config.getBoolean("logevents");
+		List<String> configmotds = config.getStringList("motds");
+		motds.addAll(configmotds);
 		Bukkit.getServer().getPluginManager().registerEvents(this, this);
 		//World queuew = new WorldCreator("queue_world").createWorld();
         //Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new TeleporterRunnable(), 0L, 300L);
