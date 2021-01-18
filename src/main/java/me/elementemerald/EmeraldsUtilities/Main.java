@@ -172,7 +172,7 @@ public class Main extends JavaPlugin implements Listener, TabCompleter {
         Random r = new Random();
         int rint = r.nextInt(motds.size());
         String newmotd = motds.get(rint);
-        e.setMotd(newmotd);
+        e.setMotd(ChatColor.translateAlternateColorCodes('&', newmotd));
     }
 	
 	@EventHandler
