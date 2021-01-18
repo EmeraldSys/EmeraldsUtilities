@@ -179,7 +179,7 @@ public class Main extends JavaPlugin implements Listener, TabCompleter {
 	public void onJoin(PlayerJoinEvent e)
 	{
 		Player p = e.getPlayer();
-		p.sendMessage(ChatColor.AQUA + "This server is running Emerald's Custom Utility plugin.");
+		p.sendMessage(ChatColor.AQUA + "This server is running Emerald's Custom Utility dev version " + this.getDescription().getVersion() + ".");
 
 		// user queue system below
 		/* World w = Bukkit.getWorld("world");
