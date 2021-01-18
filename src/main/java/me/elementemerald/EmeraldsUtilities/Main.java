@@ -113,7 +113,12 @@ public class Main extends JavaPlugin implements Listener, TabCompleter {
 		logevents = config.getBoolean("logevents");
 		motds.clear();
 		List<String> configmotds = config.getStringList("motds");
-		motds.addAll(configmotds);
+		List<String> configmotds_2 = new ArrayList<>();
+		for (String str : configmotds)
+		{
+			String newstr = str.replace("\n", System.getProperty("line.separator"));
+			motds.add(newstr);
+		}
 		//randomspawn = spawning.getBoolean("randomspawn");
 	}
 	
@@ -155,7 +160,12 @@ public class Main extends JavaPlugin implements Listener, TabCompleter {
 		entitylimit = cleanup.getInt("entitylimit");
 		logevents = config.getBoolean("logevents");
 		List<String> configmotds = config.getStringList("motds");
-		motds.addAll(configmotds);
+		List<String> configmotds_2 = new ArrayList<>();
+		for (String str : configmotds)
+		{
+			String newstr = str.replace("\n", System.getProperty("line.separator"));
+			motds.add(newstr);
+		}
 		Bukkit.getServer().getPluginManager().registerEvents(this, this);
 		//World queuew = new WorldCreator("queue_world").createWorld();
         //Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new TeleporterRunnable(), 0L, 300L);
