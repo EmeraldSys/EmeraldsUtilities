@@ -1,12 +1,14 @@
 main: me.elementemerald.EmeraldsUtilities.Main
 name: EmeraldsUtilities
-version: 0.0.3
+version: 0.0.3a
 description: My own set of utilities I made. I made this while learning regular Java lol.
 api-version: 1.16
 author: ElementEmerald
 website: mc.eemerald.xyz
 
 commands:
+   eutilities:
+      description: Main command.
    eureload:
       description: Reloads config.
    eucustomentity:
