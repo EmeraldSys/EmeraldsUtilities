@@ -64,6 +64,7 @@ public class Main extends JavaPlugin implements Listener, TabCompleter {
 	private ArrayList<String> godmode = new ArrayList<String>();
 	private static ArrayList<Player> queue = new ArrayList<Player>();
 	private List<String> motds = new ArrayList<>();
+	private static ServerTPS tps = new ServerTPS();
 
 	boolean debug = true;
 
@@ -156,10 +157,10 @@ public class Main extends JavaPlugin implements Listener, TabCompleter {
 		@Override
 		public void run()
 		{
-			double tps = ServerTPS.getTPS();
+			tps.tick();
 			for (Player plr : Bukkit.getOnlinePlayers())
 			{
-				plr.setPlayerListFooter(ChatColor.translateAlternateColorCodes('&', String.format("&aTPS - %f", tps)));
+				plr.setPlayerListFooter(ChatColor.translateAlternateColorCodes('&', String.format("&aTPS - %f", tps.getTPS())));
 			}
 		}
 	}
@@ -182,7 +183,7 @@ public class Main extends JavaPlugin implements Listener, TabCompleter {
 		List<String> configmotds = config.getStringList("motds");
 		motds.addAll(configmotds);
 		Bukkit.getServer().getPluginManager().registerEvents(this, this);
-		Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new ServerTPSResponse(), 0L, 600L);
+		Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new ServerTPSResponse(), 0L, 300L);
 		//World queuew = new WorldCreator("queue_world").createWorld();
         //Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new TeleporterRunnable(), 0L, 300L);
 	}
