@@ -21,7 +21,7 @@ public class ServerTPS {
         int target = (TICK_COUNT - 1 - ticks) % TICKS.length;
         long elapsed = System.currentTimeMillis() - TICKS[target];
 
-        return ticks / (elapsed / 1000.0D);
+        return (ticks / (elapsed / 1000.0D)) * 20.0D;
     }
 
     public long getElapsed(int tickID) {
