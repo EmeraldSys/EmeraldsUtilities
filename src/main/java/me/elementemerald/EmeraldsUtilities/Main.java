@@ -1067,7 +1067,7 @@ public class Main extends JavaPlugin implements Listener, TabCompleter {
 						boolean online = op.isOnline();
 						String lastplayed = userLastPlayed(op);
 						s.sendMessage("----- Player Whois -----");
-						String[] msgs = {String.format("User ID: %s", uid.toString()), String.format("User banned?: %s", banned ? "Yes" : "No"), String.format("User online?: %s", online ? "Yes" : "No"), String.format("User last played: %s", lastplayed)};
+						String[] msgs = {String.format("User ID: %s", uid.toString()), String.format("User IP currently connected: %s", Bukkit.getPlayer(args[0]).getAddress()), String.format("User banned?: %s", banned ? "Yes" : "No"), String.format("User online?: %s", online ? "Yes" : "No"), String.format("User last played: %s", lastplayed)};
 						s.sendMessage(msgs);
 					}
 					else {
