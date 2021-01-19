@@ -870,44 +870,77 @@ public class Main extends JavaPlugin implements Listener, TabCompleter {
 						{
 							return true;
 						}
-						
-						if (args[0].contains(","))
+
+						if (args.length == 1)
 						{
-							String[] enchs_array = args[0].split(",");
-							
-							for (String ench_b : enchs_array)
+							if (args[0].contains(","))
 							{
-								Enchantment ench = getEnchantByString(ench_b.toLowerCase());
-								if (ench == null)
+								String[] enchs_array = args[0].split(",");
+
+								for (String ench_b : enchs_array)
 								{
-									p.sendMessage(prefix + " Invalid enchantment.");
-									return true;
+									Enchantment ench = getEnchantByString(ench_b.toLowerCase());
+									if (ench == null)
+									{
+										p.sendMessage(prefix + " Invalid enchantment.");
+										return true;
+									}
+									i.addEnchantment(ench, ench.getMaxLevel());
+									p.sendMessage(prefix + " Added " + ChatColor.AQUA + ench_b.toUpperCase() + ChatColor.WHITE + " to " + ChatColor.AQUA + i.getType().name() + ChatColor.WHITE + ".");
 								}
-								
-								i.addUnsafeEnchantment(ench, Integer.parseInt(args[1]));
-								p.sendMessage(prefix + " Added " + ChatColor.AQUA + ench_b.toUpperCase() + ChatColor.WHITE + " to " + ChatColor.AQUA + i.getType().name() + ChatColor.WHITE + ".");
+							}
+							else
+							{
+								if (args[0].equals("all"))
+								{
+									for (Enchantment ench : Enchantment.values())
+									{
+										i.addUnsafeEnchantment(ench, 32767);
+									}
+									p.sendMessage(prefix + " Added all enchantments.");
+								}
+								else {
+									Enchantment ench = getEnchantByString(args[0].toLowerCase());
+									if (ench == null) {
+										p.sendMessage(prefix + " Invalid enchantment.");
+										return true;
+									}
+
+									i.addEnchantment(ench, ench.getMaxLevel());
+									p.sendMessage(prefix + " Added " + ChatColor.AQUA + args[0].toUpperCase() + ChatColor.WHITE + " to " + ChatColor.AQUA + i.getType().name() + ChatColor.WHITE + ".");
+								}
 							}
 						}
-						else
-						{
-						    if (args[0].equals("all"))
-                            {
-                                for (Enchantment ench : Enchantment.values())
-                                {
-                                    i.addUnsafeEnchantment(ench, 32767);
-                                }
-                                p.sendMessage(prefix + " Added all enchantments.");
-                            }
-						    else {
-                                Enchantment ench = getEnchantByString(args[0].toLowerCase());
-                                if (ench == null) {
-                                    p.sendMessage(prefix + " Invalid enchantment.");
-                                    return true;
-                                }
+						else if (args.length >= 2) {
+							if (args[0].contains(",")) {
+								String[] enchs_array = args[0].split(",");
 
-                                i.addUnsafeEnchantment(ench, Integer.parseInt(args[1]));
-                                p.sendMessage(prefix + " Added " + ChatColor.AQUA + args[0].toUpperCase() + ChatColor.WHITE + " to " + ChatColor.AQUA + i.getType().name() + ChatColor.WHITE + ".");
-                            }
+								for (String ench_b : enchs_array) {
+									Enchantment ench = getEnchantByString(ench_b.toLowerCase());
+									if (ench == null) {
+										p.sendMessage(prefix + " Invalid enchantment.");
+										return true;
+									}
+									i.addUnsafeEnchantment(ench, Integer.parseInt(args[1]));
+									p.sendMessage(prefix + " Added " + ChatColor.AQUA + ench_b.toUpperCase() + ChatColor.WHITE + " to " + ChatColor.AQUA + i.getType().name() + ChatColor.WHITE + ".");
+								}
+							} else {
+								if (args[0].equals("all")) {
+									for (Enchantment ench : Enchantment.values()) {
+										i.addUnsafeEnchantment(ench, 32767);
+									}
+									p.sendMessage(prefix + " Added all enchantments.");
+								} else {
+									Enchantment ench = getEnchantByString(args[0].toLowerCase());
+									if (ench == null) {
+										p.sendMessage(prefix + " Invalid enchantment.");
+										return true;
+									}
+
+									i.addUnsafeEnchantment(ench, Integer.parseInt(args[1]));
+									p.sendMessage(prefix + " Added " + ChatColor.AQUA + args[0].toUpperCase() + ChatColor.WHITE + " to " + ChatColor.AQUA + i.getType().name() + ChatColor.WHITE + ".");
+								}
+							}
 						}
 					}
 					catch (IndexOutOfBoundsException ex)
@@ -1463,6 +1496,10 @@ public class Main extends JavaPlugin implements Listener, TabCompleter {
 					s.sendMessage(prefix + " Invalid syntax. Usage: /eugenworld <name>");
 				}
 			}
+			else
+			{
+				s.sendMessage(prefix + " You do not have access to this command.");
+			}
 		}
 		if (label.equalsIgnoreCase("euunloadworld"))
 		{
@@ -1475,6 +1512,32 @@ public class Main extends JavaPlugin implements Listener, TabCompleter {
 				else
 				{
 					s.sendMessage(prefix + " An error occurred while unloading.");
+				}
+			}
+			else
+			{
+				s.sendMessage(prefix + " You do not have access to this command.");
+			}
+		}
+		if (label.equalsIgnoreCase("eustack"))
+		{
+			if (s instanceof Player)
+			{
+				Player p = (Player)s;
+				if (p.hasPermission("EUtilities.item"))
+				{
+					int amount = Integer.parseInt(args[0]);
+					if (amount > 64)
+					{
+						return true;
+					}
+					ItemStack i = p.getInventory().getItemInMainHand();
+					i.setAmount(amount);
+					p.sendMessage(String.format("%s Set item stack to %d.", prefix, amount));
+				}
+				else
+				{
+					s.sendMessage(prefix + " You do not have access to this command.");
 				}
 			}
 		}

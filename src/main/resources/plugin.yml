@@ -71,6 +71,8 @@ commands:
       description: Generates a new world.
    euunloadworld:
       description: Unloads a world.
+   eustack:
+      description: Set stack amount.
 permissions:
    EUtilities.config:
       description: Allows config control.
