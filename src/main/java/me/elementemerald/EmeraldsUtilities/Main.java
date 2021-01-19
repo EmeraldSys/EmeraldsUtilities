@@ -16,6 +16,9 @@ import java.util.Map.Entry;
 import java.util.Random;
 import java.util.Timer;
 
+import org.bukkit.block.data.AnaloguePowerable;
+import org.bukkit.block.data.BlockData;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.*;
 import org.bukkit.configuration.ConfigurationSection;
@@ -148,6 +151,18 @@ public class Main extends JavaPlugin implements Listener, TabCompleter {
 			}
 		}
 	}
+
+	public static class ServerTPSResponse implements Runnable {
+		@Override
+		public void run()
+		{
+			double tps = ServerTPS.getTPS();
+			for (Player plr : Bukkit.getOnlinePlayers())
+			{
+				plr.setPlayerListFooter(ChatColor.translateAlternateColorCodes('&', String.format("&aTPS - %f", tps)));
+			}
+		}
+	}
 	
 	@Override
 	public void onEnable()
@@ -167,6 +182,7 @@ public class Main extends JavaPlugin implements Listener, TabCompleter {
 		List<String> configmotds = config.getStringList("motds");
 		motds.addAll(configmotds);
 		Bukkit.getServer().getPluginManager().registerEvents(this, this);
+		Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new ServerTPSResponse(), 0L, 600L);
 		//World queuew = new WorldCreator("queue_world").createWorld();
         //Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new TeleporterRunnable(), 0L, 300L);
 	}
@@ -304,6 +320,17 @@ public class Main extends JavaPlugin implements Listener, TabCompleter {
 					}
 				}
 			}
+		}
+	}
+
+	@EventHandler
+	public void onPlaced(BlockPlaceEvent e)
+	{
+		Block b = e.getBlockPlaced();
+		BlockData bd = b.getBlockData();
+		if (bd instanceof AnaloguePowerable && b.getType() == Material.REDSTONE_WIRE)
+		{
+			AnaloguePowerable ap = (AnaloguePowerable) bd;
 		}
 	}
 	
