@@ -19,10 +19,15 @@ repositories {
     maven {
         url = 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/'
     }
+
+    maven {
+        url = 'https://mvnrepository.com/artifact/org.json/json'
+    }
 }
 
 dependencies {
     compileOnly 'org.spigotmc:spigot-api:1.16.5-R0.1-SNAPSHOT'
+    compileOnly 'org.json:json:20201115'
 }
 
 compileJava.options.encoding = 'UTF-8'
