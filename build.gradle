@@ -19,10 +19,6 @@ repositories {
     maven {
         url = 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/'
     }
-
-    maven {
-        url = 'https://repo1.maven.org/maven2/org/json/json/'
-    }
 }
 
 dependencies {
