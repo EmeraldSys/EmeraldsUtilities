@@ -183,7 +183,7 @@ public class Main extends JavaPlugin implements Listener, TabCompleter {
 		List<String> configmotds = config.getStringList("motds");
 		motds.addAll(configmotds);
 		Bukkit.getServer().getPluginManager().registerEvents(this, this);
-		Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new ServerTPSResponse(), 0L, 300L);
+		Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new ServerTPSResponse(), 0L, 20L);
 		//World queuew = new WorldCreator("queue_world").createWorld();
         //Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new TeleporterRunnable(), 0L, 300L);
 	}
