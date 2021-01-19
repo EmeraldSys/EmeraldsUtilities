@@ -23,7 +23,7 @@ repositories {
 
 dependencies {
     compileOnly 'org.spigotmc:spigot-api:1.16.5-R0.1-SNAPSHOT'
-    compile 'org.json:json:20201115'
+    implementation 'org.json:json:20201115'
 }
 
 compileJava.options.encoding = 'UTF-8'
