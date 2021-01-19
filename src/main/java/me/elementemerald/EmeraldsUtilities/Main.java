@@ -1,5 +1,9 @@
 package me.elementemerald.EmeraldsUtilities;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -12,6 +16,8 @@ import java.util.Map.Entry;
 import java.util.Random;
 import java.util.Timer;
 
+import org.bukkit.scheduler.BukkitRunnable;
+import org.json.*;
 import org.bukkit.*;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -149,6 +155,11 @@ public class Main extends JavaPlugin implements Listener, TabCompleter {
 	{
 		System.out.println("[Emeralds Utilities] Enabled!");
 		if (debug) System.out.println(String.format("[Emeralds Utilities] Plugin dir = %s", System.getProperty("user.dir")));
+		UpdateCheck uc = new UpdateCheck(this);
+		if (!uc.isUpdated())
+		{
+			System.out.println(String.format("[Emeralds Utilities] New version available. Latest version is %s", uc.getLatestVersion()));
+		}
 		FileConfiguration sconfig = createConfig();
 		ConfigurationSection cleanup = sconfig.getConfigurationSection("cleanup");
 		entitycleanup = cleanup.getBoolean("enabled");
