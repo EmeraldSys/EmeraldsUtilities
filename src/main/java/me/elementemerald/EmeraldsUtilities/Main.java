@@ -17,7 +17,6 @@ import java.util.Random;
 import java.util.Timer;
 
 import org.bukkit.scheduler.BukkitRunnable;
-import org.json.*;
 import org.bukkit.*;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
