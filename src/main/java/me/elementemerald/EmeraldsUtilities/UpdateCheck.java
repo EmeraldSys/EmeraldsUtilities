@@ -1,6 +1,6 @@
 package me.elementemerald.EmeraldsUtilities;
 
-import org.json.JSONObject;
+import com.google.gson.Gson;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -11,7 +11,11 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class UpdateCheck {
     private final JavaPlugin pl;
-    private JSONObject jobj;
+    private static class GitHubAPIResponse
+    {
+        private String tag_name;
+    }
+    private GitHubAPIResponse jobj;
 
     public UpdateCheck(JavaPlugin pl)
     {
@@ -32,7 +36,7 @@ public class UpdateCheck {
             in.close();
 
             String resp = content.toString();
-            JSONObject obj = new JSONObject(resp);
+            GitHubAPIResponse obj = new Gson().fromJson(resp, GitHubAPIResponse.class);
             jobj = obj;
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
@@ -41,12 +45,12 @@ public class UpdateCheck {
 
     public boolean isUpdated()
     {
-        String latest = jobj.getString("tag_name");
+        String latest = jobj.tag_name;
         return pl.getDescription().getVersion().equalsIgnoreCase(latest);
     }
 
     public String getLatestVersion()
     {
-        return jobj.getString("tag_name");
+        return jobj.tag_name;
     }
 }
