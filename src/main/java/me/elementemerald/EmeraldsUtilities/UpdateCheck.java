@@ -22,7 +22,7 @@ public class UpdateCheck {
         this.pl = pl;
 
         try {
-            URL url = new URL("https://api.github.com/repos/EmeraldSysCorp/EmeraldsUtilities/releases/latest");
+            URL url = new URL("https://api.github.com/repos/EmeraldSys/EmeraldsUtilities/releases/latest");
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
             conn.setInstanceFollowRedirects(false);
