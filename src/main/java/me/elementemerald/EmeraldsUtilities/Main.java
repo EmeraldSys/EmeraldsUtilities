@@ -1560,6 +1560,7 @@ public class Main extends JavaPlugin implements Listener, TabCompleter {
 					if (s2 != null)
 					{
 						s2.set("enabled", !s2.getBoolean("enabled"));
+						saveConfig();
 						p.sendMessage(prefix + " Powertools have been turned " + (s2.getBoolean("enabled") ? "on" : "off") + ".");
 					}
 				}
