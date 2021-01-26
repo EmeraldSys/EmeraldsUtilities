@@ -306,16 +306,17 @@ public class Main extends JavaPlugin implements Listener, TabCompleter {
 			String n = p.getName();
 			ConfigurationSection s = config.getConfigurationSection("powertools");
 			ConfigurationSection s2 = s.getConfigurationSection(n);
-			if (s2 != null)
+			if (s2 != null && s2.getBoolean("enabled"))
 			{
-				for (String k : s2.getKeys(false))
+				ConfigurationSection s3 = s2.getConfigurationSection("items");
+				for (String k : s3.getKeys(false))
 				{
 					ItemStack item = e.getItem();
 					Material m = item.getType();
 					String mtype = m.toString().toLowerCase();
 					if (k.equals(mtype))
 					{
-						String cmd = s2.getString(k);
+						String cmd = s3.getString(k);
 						p.performCommand(cmd);
 						System.out.println("[Emerald's Utilities] Powertool Executed - User: " + n + " - Item type: " + m.toString() + " - Command: " + cmd);
 					}
@@ -597,9 +598,15 @@ public class Main extends JavaPlugin implements Listener, TabCompleter {
 				if (ps == null)
 				{
 					ps = cs.createSection(p.getName());
+					ps.set("enabled", true);
+				}
+				ConfigurationSection is = ps.getConfigurationSection("items");
+				if (is == null)
+				{
+					is = ps.createSection("items");
 				}
 				
-				ps.set(i.getType().toString().toLowerCase(), String.join(" ", args));
+				is.set(i.getType().toString().toLowerCase(), String.join(" ", args));
 				
 				try
 				{
