@@ -1548,6 +1548,23 @@ public class Main extends JavaPlugin implements Listener, TabCompleter {
 				}
 			}
 		}
+		if (label.equalsIgnoreCase("eutogglept"))
+		{
+			if (s instanceof Player)
+			{
+				Player p = (Player)s;
+				if (p.hasPermission("EUtilities.item"))
+				{
+					ConfigurationSection s1 = config.getConfigurationSection("powertools");
+					ConfigurationSection s2 = s1.getConfigurationSection(p.getName());
+					if (s2 != null)
+					{
+						s2.set("enabled", !s2.getBoolean("enabled"));
+						p.sendMessage(prefix + " Powertools have been turned " + (s2.getBoolean("enabled") ? "on" : "off") + ".");
+					}
+				}
+			}
+		}
 		return true;
 	}
 
@@ -1749,6 +1766,10 @@ public class Main extends JavaPlugin implements Listener, TabCompleter {
 				}
 				return worlds;
 			}
+		}
+		else if (cmd.getName().equalsIgnoreCase("eutogglept"))
+		{
+			return emptyList();
 		}
 		return null;
 	}
