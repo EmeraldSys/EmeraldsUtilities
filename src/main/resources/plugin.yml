@@ -73,6 +73,8 @@ commands:
       description: Unloads a world.
    eustack:
       description: Set stack amount.
+   eutogglept:
+      description: Toggle your powertools.
 permissions:
    EUtilities.config:
       description: Allows config control.
